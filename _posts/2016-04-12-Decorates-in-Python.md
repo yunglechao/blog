@@ -190,8 +190,11 @@ How you’d do it manually:
     #Before the function runs
     #I am a stand alone function, don't you dare modify me
     #After the function runs
-    Now, you probably want that every time you call a_stand_alone_function, a_stand_alone_function_decorated is called instead. That’s easy, just overwrite a_stand_alone_function with the function returned by my_shiny_new_decorator:
-    
+	{% endhighlight %}
+
+Now, you probably want that every time you call a_stand_alone_function, a_stand_alone_function_decorated is called instead. That’s easy, just overwrite a_stand_alone_function with the function returned by my_shiny_new_decorator:
+
+    {% highlight python %}
     a_stand_alone_function = my_shiny_new_decorator(a_stand_alone_function)
     a_stand_alone_function()
     #outputs:
@@ -277,9 +280,10 @@ Of course, you can accumulate decorators:
     # --ham--
     #<\______/>
     # ~salad~
-    Now: to answer the question...
-    As a conclusion, you can easily see how to answer the question:
-    
+	{% endhighlight %}
+Now: to answer the question...
+As a conclusion, you can easily see how to answer the question:
+    {% highlight python %}
     # The decorator to make it bold
     def makebold(fn):
     # The new function the decorator returns
@@ -311,10 +315,13 @@ Of course, you can accumulate decorators:
     
     print say() 
     #outputs: <b><i>hello</i></b>
-    You can now just leave happy, or burn your brain a little bit more and see advanced uses of decorators.
+	{% endhighlight %}
+You can now just leave happy, or burn your brain a little bit more and see advanced uses of decorators.
     
-    Taking decorators to the next level
-    Passing arguments to the decorated function
+Taking decorators to the next level
+Passing arguments to the decorated function
+
+	{% highlight python %}
     # It’s not black magic, you just have to let the wrapper 
     # pass the argument:
     
@@ -520,9 +527,11 @@ Let’s get evil. ☺
     #As the wrapper, I return the RESULT of the decorated function.
     #I am the decorated function.
     No surprise here.
+	{% endhighlight %}
+
+Let’s do EXACTLY the same thing, but skip all the pesky intermediate variables:
     
-    Let’s do EXACTLY the same thing, but skip all the pesky intermediate variables:
-    
+	{% highlight python %}
     def decorated_function():
     print "I am the decorated function."
     decorated_function = decorator_maker()(decorated_function)
@@ -555,10 +564,13 @@ Let’s get evil. ☺
     #I am the wrapper around the decorated function. I am called when you call the decorated function.
     #As the wrapper, I return the RESULT of the decorated function.
     #I am the decorated function.
-    Hey, did you see that? We used a function call with the "@" syntax! :-)
+	{% endhighlight %}
+
+Hey, did you see that? We used a function call with the "@" syntax! :-)
     
-    So, back to decorators with arguments. If we can use functions to generate the decorator on the fly, we can pass arguments to that function, right?
-    
+So, back to decorators with arguments. If we can use functions to generate the decorator on the fly, we can pass arguments to that function, right?
+
+    {% highlight python %}
     def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
     
     print "I make decorators! And I accept arguments:", decorator_arg1, decorator_arg2
@@ -603,7 +615,7 @@ Let’s get evil. ☺
 
 Here it is: a decorator with arguments. Arguments can be set as variable:
 	
-   	{% highlight python %} 
+    {% highlight python %} 
     c1 = "Penny"
     c2 = "Leslie"
     
@@ -812,8 +824,10 @@ You can use them to extend several functions in a DRY’s way, like so:
     #wrapper 0.0
     #wrapper has been used: 2x
     #!amanaP :lanac a ,noep a ,stah eros ,raj a ,hsac ,oloR a ,tur a ,mapS ,snip ,eperc a ,)lemac a ro( niaga gab ananab a ,gat a ,nat a ,gab ananab a ,gag a ,inoracam ,elacrep ,epins ,spam ,arutaroloc a ,shajar ,soreh ,atsap ,eonac a ,nalp a ,nam A
-    Of course the good thing with decorators is that you can use them right away on almost anything without rewriting. DRY, I said:
+	{% endhighlight %}
+Of course the good thing with decorators is that you can use them right away on almost anything without rewriting. DRY, I said:
     
+	{% highlight python %} 
     @counter
     @benchmark
     @logging
