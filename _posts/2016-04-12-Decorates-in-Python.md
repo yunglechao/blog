@@ -5,10 +5,10 @@ date: 2016-04-12 22:05:30 +0800
 categories: jekyll update
 ---
 
-#Decorator Basics
-##Python’s functions are objects
+# Decorator Basics
+## Python’s functions are objects
 To understand decorators, you must first understand that functions are objects in Python. This has important consequences. Let’s see why with a simple example :
-
+{% highlight python %}
     def shout(word="yes"):
     return word.capitalize()+"!"
     
@@ -39,10 +39,11 @@ To understand decorators, you must first understand that functions are objects i
     
     print scream()
     # outputs: 'Yes!'
+{% endhighlight %}
 Okay! Keep this in mind. We’ll circle back to it shortly.
 
 Another interesting property of Python functions is they can be defined... inside another function!
-
+{% highlight python %}
     def talk():
     
     # You can define a function on the fly in "talk" ...
@@ -67,7 +68,9 @@ Another interesting property of Python functions is they can be defined... insid
     print e
     #outputs : "name 'whisper' is not defined"*
     #Python's functions are objects
-##Functions references
+{% endhighlight %}
+
+## Functions references
 
 
 Okay, still here? Now the fun part...
@@ -81,7 +84,7 @@ can be defined in another function
 
 
 That means that a function can return another function. Have a look! ☺
-
+{% highlight python %}
     def getTalk(kind="shout"):
     
     # We define functions on the fly
@@ -115,10 +118,11 @@ That means that a function can return another function. Have a look! ☺
     # And you can even use it directly if you feel wild:
     print getTalk("whisper")()
     #outputs : yes...
+{% endhighlight %}
 But wait...there’s more!
 
 If you can return a function, you can pass one as a parameter:
-
+{% highlight python %}
     def doSomethingBefore(func): 
     print "I do something before then I call the function you gave me"
     print func()
@@ -127,11 +131,12 @@ If you can return a function, you can pass one as a parameter:
     #outputs: 
     #I do something before then I call the function you gave me
     #Yes!
+{% endhighlight %}
 Well, you just have everything needed to understand decorators. You see, decorators are “wrappers”, which means that they let you execute code before and after the function they decorate without modifying the function itself.
 
-##Handcrafted decorators
+## Handcrafted decorators
 How you’d do it manually:
-
+{% highlight python %}
     # A decorator is a function that expects ANOTHER function as parameter
     def my_shiny_new_decorator(a_function_to_decorate):
     
@@ -196,13 +201,14 @@ How you’d do it manually:
     #Before the function runs
     #Leave me alone
     #After the function runs
+{% endhighlight %}
 Yes, that’s all, it’s that simple. @decorator is just a shortcut to:
 
 another_stand_alone_function = my_shiny_new_decorator(another_stand_alone_function)
 Decorators are just a pythonic variant of the decorator design pattern. There are several classic design patterns embedded in Python to ease development (like iterators).
 
 Of course, you can accumulate decorators:
-
+{% highlight python %}
     def bread(func):
     def wrapper():
     print "</''''''\>"
@@ -317,13 +323,13 @@ Of course, you can accumulate decorators:
     # outputs:
     #I got args! Look: Peter Venkman
     #My name is Peter Venkman
-
-##Decorating methods
+{% endhighlight %}
+## Decorating methods
 
 One nifty thing about Python is that methods and functions are really the same. The only difference is that methods expect that their first argument is a reference to the current object (self).
 
 That means you can build a decorator for methods the same way! Just remember to take self into consideration:
-
+{% highlight python %}
     def method_friendly_decorator(method_to_decorate):
     def wrapper(self, lie):
     lie = lie - 3 # very friendly, decrease age even more :-)
@@ -343,8 +349,9 @@ That means you can build a decorator for methods the same way! Just remember to 
     l = Lucy()
     l.sayYourAge(-3)
     #outputs: I am 26, what did you think?
+{% endhighlight %}
 If you’re making general-purpose decorator--one you’ll apply to any function or method, no matter its arguments--then just use *args, **kwargs:
-
+{% highlight python %}
     def a_decorator_passing_arbitrary_arguments(function_to_decorate):
     # The wrapper accepts any arguments
     def a_wrapper_accepting_arbitrary_arguments(*args, **kwargs):
@@ -407,13 +414,14 @@ If you’re making general-purpose decorator--one you’ll apply to any function
     #(<__main__.Mary object at 0xb7d303ac>,)
     #{}
     #I am 28, what did you think?
-##Passing arguments to the decorator
+{% endhighlight %}
+## Passing arguments to the decorator
 Great, now what would you say about passing arguments to the decorator itself?
 
 This can get somewhat twisted, since a decorator must accept a function as an argument. Therefore, you cannot pass the decorated function’s arguments directly to the decorator.
 
 Before rushing to the solution, let’s write a little reminder:
-
+{% highlight python %}
     # Decorators are ORDINARY functions
     def my_decorator(func):
     print "I am an ordinary function"
@@ -438,12 +446,13 @@ Before rushing to the solution, let’s write a little reminder:
     print "zzzzzzzz"
     
     #outputs: I am an ordinary function
+{% endhighlight %}
 It’s exactly the same. "my_decorator" is called. So when you @my_decorator, you are telling Python to call the function 'labelled by the variable "my_decorator"'.
 
 This is important! The label you give can point directly to the decorator—or not.
 
 Let’s get evil. ☺
-
+{% highlight python %}
     def decorator_maker():
     
     print "I make decorators! I am executed only once: "+\
@@ -568,8 +577,9 @@ Let’s get evil. ☺
     #   - from the function call: Rajesh Howard 
     #Then I can pass them to the decorated function
     #I am the decorated function and only knows about my arguments: Rajesh Howard
+{% endhighlight %}
 Here it is: a decorator with arguments. Arguments can be set as variable:
-    
+   {% highlight python %} 
     c1 = "Penny"
     c2 = "Leslie"
     
@@ -588,9 +598,10 @@ Here it is: a decorator with arguments. Arguments can be set as variable:
     #   - from the function call: Leslie Howard 
     #Then I can pass them to the decorated function
     #I am the decorated function and only knows about my arguments: Leslie Howard
+{% endhighlight %}
 As you can see, you can pass arguments to the decorator like any function using this trick. You can even use *args, **kwargs if you wish. But remember decorators are called only once. Just when Python imports the script. You can't dynamically set the arguments afterwards. When you do "import x", the function is already decorated, so you can't change anything.
 
-##Let’s practice: decorating a decorator
+## Let’s practice: decorating a decorator
 Okay, as a bonus, I'll give you a snippet to make any decorator accept generically any argument. After all, in order to accept arguments, we created our decorator using another function.
 
 We wrapped the decorator.
@@ -600,7 +611,7 @@ Anything else we saw recently that wrapped function?
 Oh yes, decorators!
 
 Let’s have some fun and write a decorator for the decorators:
-
+{% highlight python %}
     def decorator_with_args(decorator_to_enhance):
     """ 
     This function is supposed to be used as a decorator.
@@ -625,8 +636,9 @@ Let’s have some fun and write a decorator for the decorators:
     return decorator_wrapper
     
     return decorator_maker
+{% endhighlight %}
 It can be used as follows:
-
+{% highlight python %}
     # You create the function you will use as a decorator. And stick a decorator on it :-)
     # Don't forget, the signature is "decorator(func, *args, **kwargs)"
     @decorator_with_args 
@@ -648,9 +660,10 @@ It can be used as follows:
     #Hello Universe and everything
     
     # Whoooot!
+{% endhighlight %}
 I know, the last time you had this feeling, it was after listening a guy saying: "before understanding recursion, you must first understand recursion". But now, don't you feel good about mastering this?
 
-##Best practices: decorators
+## Best practices: decorators
 - Decorators were introduced in Python 2.4, so be sure your code will be run on >= 2.4.
 - Decorators slow down the function call. Keep that in mind.
 - **You cannot un-decorate a function.** (There are hacks to create decorators that can be removed, but nobody uses them.) So once a function is decorated, it’s decorated for all the code.
@@ -659,7 +672,7 @@ I know, the last time you had this feeling, it was after listening a guy saying:
 The functools module was introduced in Python 2.5. It includes the function functools.wraps(), which copies the name, module, and docstring of the decorated function to its wrapper.
 
 (Fun fact: functools.wraps() is a decorator! ☺)
-
+{% highlight python %}
     # For debugging, the stacktrace prints you the function __name__
     def foo():
     print "foo"
@@ -700,8 +713,8 @@ The functools module was introduced in Python 2.5. It includes the function func
     
     print foo.__name__
     #outputs: foo
-
-##How can the decorators be useful?
+{% endhighlight %}
+## How can the decorators be useful?
 **Now the big question**: What can I use decorators for?
 
 Seem cool and powerful, but a practical example would be great. Well, there are 1000 possibilities. Classic uses are extending a function behavior from an external lib (you can't modify it), or for debugging (you don't want to modify it because it’s temporary).
@@ -791,6 +804,7 @@ You can use them to extend several functions in a DRY’s way, like so:
     #wrapper 0.01
     #wrapper has been used: 2x
     #Curse you, merciful Poseidon!
+{% endhighlight %}
 Python itself provides several decorators: property, staticmethod, etc.
 
 Django uses decorators to manage caching and view permissions.
